@@ -6,8 +6,8 @@ SRCS = srcs/main.c srcs/parser.c
 
 OBJS = main.o parser.o
 
-LIB_PATH = ./ft_printf/
-LIB = ftprintf
+LIB_PATH = -L./ft_printf/
+LIB = -lftprintf
 
 LIBINC_PATH = ./ft_printf/includes/
 INC = ./includes/
@@ -15,22 +15,21 @@ INC = ./includes/
 all: $(NAME)
 
 $(NAME):
-	@make -C $(LIB_PATH)
-	@echo "libftprintf.a Ok"
-	@$(CC) $(CFLAGS) $(SRCS) -I $(LIBINC_PATH) -I $(INC) -o $(NAME)
+	@make -C ./ft_printf/
+	@echo "[libftprintf.a Ok]"
+	@$(CC) $(CFLAGS) $(LIB_PATH) $(LIB) $(SRCS) -I $(LIBINC_PATH) -I $(INC) -o $(NAME)
 	@echo "$(NAME) Ok"
 
 clean:
 	@rm -rf *.o
-	@make clean -C $(LIB_PATH)
+	@make clean -C ./ft_printf/
 	@echo "all *.o deleted"
 
 fclean : clean
 	@rm -rf $(NAME)
-	@make fclean -C $(LIB_PATH)
+	@make fclean -C ./ft_printf/
 	@echo "exec + lib deleted"
 
 re: fclean all
-	@make re -C $(LIB_PATH)
 
 .PHONY: all, clean, fclean, re

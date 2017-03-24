@@ -10,10 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "filler.h"
 
 int		ft_parser(void)
 {
+	char	*str;
+	int		fd;
 
+	fd = 0;
+	while (ft_get_next_line(fd, &str) > 0)
+		ft_printf("str[%s]\n",str);
 	return (0);
 }

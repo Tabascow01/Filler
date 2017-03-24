@@ -104,7 +104,7 @@ static void		ft_read_fd(int *sizeread, int *size, int fd, char **buf)
 	(*buf)[(*size)] = '\0';
 }
 
-int				get_next_line(const int fd, char **line)
+int				ft_get_next_line(const int fd, char **line)
 {
 	static t_list	*lst = NULL;
 	char			**stock;
