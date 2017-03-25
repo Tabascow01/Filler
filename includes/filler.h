@@ -15,6 +15,13 @@
 
 #include "../ft_printf/includes/ft_printf.h"
 
+typedef struct		s_fill
+{
+	char	playernum;
+	char	playername;
+	char	*table;
+}					t_fill;
+
 int		ft_parser(void);
 
 #endif
