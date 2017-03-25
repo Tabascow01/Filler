@@ -16,9 +16,10 @@ int		ft_parser(void)
 {
 	char	*str;
 	int		fd;
+	int		res;
 
 	fd = 0;
-	while (ft_get_next_line(fd, &str) > 0)
-		ft_printf("str[%s]\n",str);
+	while ((res = ft_get_next_line(fd, &str)) > 0)
+		ft_putstr("4 013\n");
 	return (0);
 }

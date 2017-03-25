@@ -17,6 +17,6 @@ int		main(int argc, char *argv[])
 {
 	argv = NULL;
 	if (argc < 2)
-		ft_parser();
+		return (ft_parser());
 	return (0);
 }
