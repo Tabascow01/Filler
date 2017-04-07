@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 23:41:49 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/07 03:06:35 by mchemakh         ###   ########.fr       */
+/*   Created: 2017/03/23 20:35:56 by mchemakh          #+#    #+#             */
+/*   Updated: 2017/03/23 22:08:07 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "filler.h"
+#include "ft_printf.h"
 
-int		main(int argc, char *argv[])
+char	*ft_strrev(char *str, int i)
 {
-	t_fill *list;
+	int		j;
+	char	*tmp;
 
-	argv = NULL;
-	list = NULL;
-	if (argc < 2)
+	j = 0;
+	tmp = ft_strnew(i);
+	i -= 1;
+	while (i >= 0)
 	{
-		list = ft_init(list);
-		ft_parser(list);
+		tmp[j] = str[i];
+		i--;
+		j++;
 	}
-	return (0);
+	tmp[j] = '\0';
+	ft_strdel(&str);
+	str = tmp;
+	return (str);
 }

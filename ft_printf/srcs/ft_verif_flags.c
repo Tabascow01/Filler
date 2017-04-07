@@ -6,11 +6,12 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 00:59:31 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/03/21 21:02:17 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/06 03:51:19 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>//
 
 static void		ft_verif_flags_next(t_flags *list, int idxtmp)
 {
@@ -22,10 +23,7 @@ static void		ft_verif_flags_next(t_flags *list, int idxtmp)
 		ft_save_spcs(list, idxtmp);
 	if (ft_verif_left(list, idxtmp) &&
 			ft_isleft_allowed(list, idxtmp) && list->left == 0)
-	{
-		list->index += 1;
-		list->left = 1;
-	}
+		ft_save_left(list, idxtmp);
 	if (ft_verif_number(list, idxtmp) &&
 			ft_isdigit_allowed(list, idxtmp) && list->digit == 0)
 		ft_save_digit(list, idxtmp);
@@ -44,8 +42,7 @@ int				ft_verif_flags(t_flags *list)
 		if (ft_verif_numbersign(list, idxtmp) &&
 				ft_isnbsign_allowed(list, idxtmp) && list->sign == 0)
 			ft_save_sign(list, idxtmp);
-		else
-			ft_verif_flags_next(list, idxtmp);
+		ft_verif_flags_next(list, idxtmp);
 		if (ft_verif_percent(list, idxtmp) && list->percent == 0)
 		{
 			list->index += 1;

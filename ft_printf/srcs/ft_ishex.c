@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_ishex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 23:41:49 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/07 03:06:35 by mchemakh         ###   ########.fr       */
+/*   Created: 2017/04/05 23:50:50 by mchemakh          #+#    #+#             */
+/*   Updated: 2017/04/06 03:54:16 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "filler.h"
+#include "ft_printf.h"
 
-int		main(int argc, char *argv[])
+int		ft_ishex(char *str)
 {
-	t_fill *list;
+	int i;
 
-	argv = NULL;
-	list = NULL;
-	if (argc < 2)
+	i = 0;
+	while (str[i])
 	{
-		list = ft_init(list);
-		ft_parser(list);
+		if (str[0] == '0' && str[1] == '\0')
+			return (0);
+		if (!ft_isdigit(str[i]) && str[i] < 'a' && str[i] > 'z' && str[i] < 'A' && str[i] > 'Z')
+			return (0);
+		i++;
 	}
-	return (0);
+	return (1);
 }

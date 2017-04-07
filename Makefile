@@ -2,7 +2,7 @@ NAME = mchemakh.filler
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = srcs/main.c srcs/parser.c
+SRCS = srcs/main.c srcs/parser.c srcs/ft_init.c srcs/ft_cut_table.c
 
 OBJS = main.o parser.o
 

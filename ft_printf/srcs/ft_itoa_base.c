@@ -6,31 +6,11 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:59:24 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/02/17 23:42:45 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/04 04:20:22 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static char		*reverse(char *str, int i)
-{
-	int		j;
-	char	*tmp;
-
-	j = 0;
-	tmp = ft_strnew(i);
-	i -= 1;
-	while (i >= 0)
-	{
-		tmp[j] = str[i];
-		i--;
-		j++;
-	}
-	tmp[j] = '\0';
-	ft_strdel(&str);
-	str = tmp;
-	return (str);
-}
 
 static char		*ft_itoa_next(char **str, int *num, int *base, int *neg)
 {
@@ -60,10 +40,11 @@ char			*ft_itoa_base(int num, int base)
 
 	i = 0;
 	negative = 0;
-	str = ft_strnew(12);
-	str = ft_itoa_next(&str, &num, &base, &negative);
+
 	if (num == -2147483648)
 		return (ft_strdup("-2147483648"));
+	str = ft_strnew(12);
+	str = ft_itoa_next(&str, &num, &base, &negative);
 	if (str[0] == '0' && str[1] == '\0')
 		return (str);
 	while (num != 0)
@@ -75,6 +56,6 @@ char			*ft_itoa_base(int num, int base)
 	if (negative == 1)
 		str[i++] = '-';
 	str[i] = '\0';
-	str = reverse(str, i);
+	str = ft_strrev(str, i);
 	return (str);
 }

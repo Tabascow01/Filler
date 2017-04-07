@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 02:56:18 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/03/21 22:09:45 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/06 02:37:37 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include <fcntl.h>
-# include <stdio.h>
 
 typedef struct		s_flags
 {
@@ -44,7 +43,21 @@ typedef struct		s_flags
 	char		*digit;
 	int			dig1;
 	int			dig2;
+	int			nbleft;
 }					t_flags;
+
+typedef struct		s_precs
+{
+	char		*tmp;
+	char		*tmpargs;
+	wchar_t		*wtmp;
+	wchar_t		*wtmpargs;
+	int			i;
+	int			j;
+	int			size;
+	int			neg;
+	int			null;
+}					t_precs;
 
 typedef struct		s_list
 {
@@ -57,6 +70,54 @@ typedef struct		s_list
 ** ft_printf
 */
 
+int					ft_ishex(char *str);
+
+void				ft_wldgt_8(t_flags *lit, t_precs *lst, int *dtmp, int *d);
+void				ft_wldgt_7(t_flags *list, t_precs *lst, int *d);
+void				ft_wldgt_6(t_flags *list, t_precs *lst, wchar_t **ar);
+void				ft_wldgt_5(t_flags *lit, t_precs *lst, int *d);
+void				ft_wldgt_4(t_precs *lst, int *dtmp, wchar_t **ar);
+void				ft_wldgt_3(t_precs *lst, int *dtmp, wchar_t **ar);
+void				ft_wldgt_2(t_flags *lit, t_precs *lst, int *dtmp, int *d);
+void				ft_wldgt_1(t_flags *lit, t_precs *lst, int *dtmp);
+
+void				ft_wdgt_7(t_flags *lit, t_precs *lst, int *dtmp, int *d);
+void				ft_wdgt_6(t_flags *lit, t_precs *lst, int *d);
+void				ft_wdgt_5(t_flags *lit, t_precs *lst, int *d, wchar_t **ar);
+void				ft_wdgt_4(t_flags *lit, t_precs *lst, int *d, wchar_t **ar);
+void				ft_wdgt_3(t_precs *lst, int *dgtmp, wchar_t **ar);
+void				ft_wdgt_2(t_flags *list, t_precs *lst, int *dtmp, int *d);
+int					ft_wdgt_1(t_flags *list, t_precs *lst, int *dtmp, int *d);
+
+void				ft_ldgt_8(t_flags *list, t_precs *lst, int *dtmp, int *d);
+void				ft_ldgt_7(t_flags *list, t_precs *lst, int *d);
+void				ft_ldgt_6(t_flags *list, t_precs *lst, char **ar);
+void				ft_ldgt_5(t_flags *list, t_precs *lst, int *d, char **ar);
+void				ft_ldgt_4(t_precs *lst, int *dtmp, char **ar, int *d);
+void				ft_ldgt_3(t_precs *lst, int *dtmp, char **ar, int *d);
+void				ft_ldgt_2(t_flags *list, t_precs *lst, int *dtmp, int *d);
+void				ft_ldgt_1(t_flags *list, t_precs *lst, int *dgtmp);
+
+void				ft_dgt_8(t_flags *list, t_precs *lst, int *dtmp, int *d);
+void				ft_dgt_7(t_flags *list, t_precs *lst, int *dgt);
+void				ft_dgt_6(t_flags *list, t_precs *lst, char **ar);
+void				ft_dgt_5(t_flags *list, char **ar, t_precs *lst, int *dtmp);
+void				ft_dgt_4(t_flags *list, char **ar, t_precs *lst, int *dgt);
+void				ft_dgt_3(char **str, t_precs *lst, int *dgt, int *d);
+void				ft_dgt_2(t_flags *list, int *dtmp, t_precs *lst, int *dgt);
+int					ft_dgt_1(t_flags *list, int *dgttmp, t_precs *lst, int *d);
+
+void				ft_ldigit_nnnnn(t_flags *l, char **n, int *dgt, t_precs *s);
+void				ft_ldigit_nnnn(t_flags *list, int *size, int *i, char **s);
+void				ft_return_size_nn(t_flags *list);
+void				ft_return_size_nnn(t_flags *list);
+void				ft_return_size_nnnn(t_flags *list);
+void				ft_return_size_nnnnn(t_flags *list);
+void				ft_process_flags_nnnn(t_flags *list);
+
+char				*ft_strtolower(char *str);
+char				*ft_strtoupper(char *str);
+char				*ft_strrev(char *str, int i);
 int					ft_argnull(t_flags *list);
 void				ft_decompose_digit(t_flags *list);
 void				ft_cut_lststr(t_flags *list, int start);
@@ -144,6 +205,7 @@ int					ft_verif_percent(t_flags *list, int idxtmp);
 void				ft_save_spcs(t_flags *list, int idxtmp);
 void				ft_save_digit(t_flags *list, int idxtmp);
 void				ft_save_sign(t_flags *list, int idxtmp);
+void				ft_save_left(t_flags *list, int idxtmp);
 
 int					ft_isshort_allowed(t_flags *list, int idxtmp);
 int					ft_isintmax_allowed(t_flags *list, int idxtmp);
@@ -178,6 +240,7 @@ int					ft_verif_flags(t_flags *list);
 int					ft_vrf_cv_nnnnn(t_flags *lst, int *i, va_list args);
 int					ft_verif_conv(t_flags *list, va_list args);
 
+t_precs				*ft_init_precs(t_precs *lst);
 t_flags				*ft_init_flags(t_flags *list, const char *format);
 int					ft_handle(t_flags *list, va_list args);
 int					ft_printf(const char *format, ...);
@@ -272,7 +335,7 @@ int					ft_wputstr(wchar_t *wstr);
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void				ft_lstadd(t_list **alst, t_list *new);
+void				ft_lstadd(t_list **alst, t_list *n);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 

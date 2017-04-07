@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 23:27:17 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/03/23 23:41:41 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/07 04:59:05 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,19 @@
 
 typedef struct		s_fill
 {
-	char	playernum;
-	char	playername;
+	int		playernum;
+	char	*playername;
+	int		tabx;
+	int		taby;
 	char	*table;
+	int		px;
+	int		py;
+	char	*piece;
+	
 }					t_fill;
 
-int		ft_parser(void);
+char		*ft_cut_table(char **line);
+t_fill		*ft_init(t_fill *list);
+int			ft_parser(t_fill *list);
 
 #endif

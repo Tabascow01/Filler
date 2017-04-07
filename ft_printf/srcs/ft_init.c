@@ -6,11 +6,29 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 02:04:09 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/03/02 14:28:26 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/06 02:31:37 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+t_precs		*ft_init_precs(t_precs *lst)
+{
+	if (lst == NULL)
+	{
+		lst = (t_precs *)ft_memalloc(sizeof(t_precs));
+		lst->tmp = 0;
+		lst->tmpargs = 0;
+		lst->wtmp = 0;
+		lst->wtmpargs = 0;
+		lst->i = 0;
+		lst->j = 0;
+		lst->size = 0;
+		lst->neg = 0;
+		lst->null = 0;
+	}
+	return (lst);
+}
 
 t_flags		*ft_init_flags(t_flags *list, const char *format)
 {
@@ -35,6 +53,7 @@ t_flags		*ft_init_flags(t_flags *list, const char *format)
 	lst->ret = 0;
 	lst->dig1 = 0;
 	lst->dig2 = 0;
+	lst->nbleft = 0;
 	list = lst;
 	return (list);
 }
