@@ -35,13 +35,14 @@ static char		*ft_store_piece(t_fill *list, char *line)
 		}
 		i++;
 	}
-	ft_putstr_fd(line ,2);
+	ft_putstr_fd(str, 2);
 	return (0);
 }
 
 static int		ft_store_table(t_fill *list, char *line)
 {
 	line = ft_store_piece(list, line);
+	ft_putstr_fd(line ,2);
 	if (list->table == 0)
 		list->table = ft_strnew(ft_strlen(line));
 	list->table = ft_reallocf(list->table, ft_strlen(line));
@@ -118,11 +119,16 @@ static void		ft_parse_first(t_fill *list, int fd)
 {
 	char	*line;
 	int		i;
+	int		res;
 
 	i = 0;
+	res = 0;
 	line = NULL;
-	while (ft_get_next_line(fd, &line) > 0)
+	while ((res = ft_get_next_line(fd, &line)) > 0)
 	{
+		ft_putstr_fd("res: ", 2);
+		ft_putnbr_fd(res, 2);
+		ft_putchar_fd('\n', 2);
 		if (i < 1)
 		{
 			ft_store_playerdata(list ,line);
@@ -134,9 +140,18 @@ static void		ft_parse_first(t_fill *list, int fd)
 			ft_strdel(&line);
 		}
 		else
+		{
 			ft_store_table(list, line);
+			ft_strdel(&line);
+		}
+		ft_putstr_fd("i: ", 2);
+		ft_putnbr_fd(i, 2);
+		ft_putchar_fd('\n', 2);
 		i++;
 	}
+	ft_putstr_fd("res: ", 2);
+	ft_putnbr_fd(res, 2);
+	ft_putchar_fd('\n', 2);
 }
 
 int				ft_parser(t_fill *list)
