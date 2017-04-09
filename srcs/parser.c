@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 23:40:55 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/09 22:35:05 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/09 23:34:27 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static int		ft_store_piece_next(t_fill *list, char *line)
 	{
 		list->piece = ft_strnew(ft_strlen(line) + 1);
 		list->piece = ft_strcpy(list->piece, line);
-		list->piece[ft_strlen(list->piece)] = '\n';
 		list->piece[ft_strlen(list->piece) + 1] = '\0';
 		ft_strdel(&line);
 	}
 	else
 	{
 		str = ft_strnew(ft_strlen(line) + ft_strlen(list->piece) + 1);
+		list->piece[ft_strlen(list->piece)] = '\n';
 		str = ft_strjoin(list->piece, line);
 		ft_strdel(&line);
 		ft_strdel(&list->piece);
