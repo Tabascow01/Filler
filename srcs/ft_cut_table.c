@@ -24,7 +24,7 @@ char	*ft_cut_table(char **line)
 	size = ft_strlen((*line));
 	strtmp = ft_strnew(size);
 	tmp = ft_strnew(size);
-	while (size > 0 && !ft_isalpha((*line)[size]))
+	while ((*line)[size] == '*' && (*line)[size] == '.')
 	{
 		tmp[i] = (*line)[size];
 		size--;
