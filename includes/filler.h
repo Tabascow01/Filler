@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 23:27:17 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/07 04:59:05 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/09 22:04:05 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct		s_fill
 	
 }					t_fill;
 
-char		*ft_cut_table(char **line);
 t_fill		*ft_init(t_fill *list);
 int			ft_parser(t_fill *list);
 
