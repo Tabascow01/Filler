@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 23:40:55 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/09 23:34:27 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/12 10:54:13 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,38 @@
 
 static int		ft_store_piece_next(t_fill *list, char *line)
 {
-	char	*str;
+	char		*str;
+	char		*tmp;
+	static int	stc;
 
-	if (list->piece == NULL)
+	if (list->piece == NULL && stc < 1)
 	{
 		list->piece = ft_strnew(ft_strlen(line) + 1);
 		list->piece = ft_strcpy(list->piece, line);
+		list->piece[ft_strlen(list->piece)] = '\n';
 		list->piece[ft_strlen(list->piece) + 1] = '\0';
 		ft_strdel(&line);
 	}
 	else
 	{
-		str = ft_strnew(ft_strlen(line) + ft_strlen(list->piece) + 1);
-		list->piece[ft_strlen(list->piece)] = '\n';
+		if (stc > 1)
+		{
+			tmp = ft_reallocf(list->piece, 3);
+			tmp[ft_strlen(tmp)] = '\n';
+			tmp[ft_strlen(tmp) + 1] = '\0';
+			list->piece = tmp;
+		}
+		str = ft_strnew(ft_strlen(list->piece) + ft_strlen(line));
 		str = ft_strjoin(list->piece, line);
 		ft_strdel(&line);
+		ft_bzero(list->piece, ft_strlen(str));
 		ft_strdel(&list->piece);
-		list->piece = ft_reallocf(str , 0);
+		list->piece = ft_reallocf(str, 0);
 	}
 	ft_putchar_fd('\n', 2);
 	ft_putstr_fd("Piece:\n", 2);
 	ft_putstr_fd(list->piece, 2);
+	stc++;
 	return (0);
 }
 
