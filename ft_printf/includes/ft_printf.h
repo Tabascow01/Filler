@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/16 02:56:18 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/06 02:37:37 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:05:58 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct		s_flags
 
 typedef struct		s_precs
 {
+	char		*zero;
+	char		*spaces;
 	char		*tmp;
 	char		*tmpargs;
 	wchar_t		*wtmp;
@@ -57,6 +59,7 @@ typedef struct		s_precs
 	int			size;
 	int			neg;
 	int			null;
+	int			flags;
 }					t_precs;
 
 typedef struct		s_list
@@ -89,23 +92,19 @@ void				ft_wdgt_3(t_precs *lst, int *dgtmp, wchar_t **ar);
 void				ft_wdgt_2(t_flags *list, t_precs *lst, int *dtmp, int *d);
 int					ft_wdgt_1(t_flags *list, t_precs *lst, int *dtmp, int *d);
 
-void				ft_ldgt_8(t_flags *list, t_precs *lst, int *dtmp, int *d);
-void				ft_ldgt_7(t_flags *list, t_precs *lst, int *d);
-void				ft_ldgt_6(t_flags *list, t_precs *lst, char **ar);
-void				ft_ldgt_5(t_flags *list, t_precs *lst, int *d, char **ar);
-void				ft_ldgt_4(t_precs *lst, int *dtmp, char **ar, int *d);
-void				ft_ldgt_3(t_precs *lst, int *dtmp, char **ar, int *d);
-void				ft_ldgt_2(t_flags *list, t_precs *lst, int *dtmp, int *d);
-void				ft_ldgt_1(t_flags *list, t_precs *lst, int *dgtmp);
+void				ft_ldgt_8(t_flags *list, t_precs *lst);
+void				ft_ldgt_7(t_flags *list, t_precs *lst);
+void				ft_ldgt_5(char **ar, t_flags *list, t_precs *lst);
+void				ft_ldgt_4(t_flags *list, t_precs *lst);
+void				ft_ldgt_3(t_flags *list, t_precs *lst);
+int					ft_ldgt_1(t_flags *list, t_precs *lst);
 
-void				ft_dgt_8(t_flags *list, t_precs *lst, int *dtmp, int *d);
-void				ft_dgt_7(t_flags *list, t_precs *lst, int *dgt);
-void				ft_dgt_6(t_flags *list, t_precs *lst, char **ar);
-void				ft_dgt_5(t_flags *list, char **ar, t_precs *lst, int *dtmp);
-void				ft_dgt_4(t_flags *list, char **ar, t_precs *lst, int *dgt);
-void				ft_dgt_3(char **str, t_precs *lst, int *dgt, int *d);
-void				ft_dgt_2(t_flags *list, int *dtmp, t_precs *lst, int *dgt);
-int					ft_dgt_1(t_flags *list, int *dgttmp, t_precs *lst, int *d);
+void				ft_dgt_8(t_flags *list, t_precs *lst);
+void				ft_dgt_7(t_flags *list, t_precs *lst);
+void				ft_dgt_5(char **ar, t_flags *list, t_precs *lst);
+void				ft_dgt_4(t_flags *list, t_precs *lst);
+void				ft_dgt_3(t_flags *list, t_precs *lst);
+int					ft_dgt_1(t_flags *list, t_precs *lst);
 
 void				ft_ldigit_nnnnn(t_flags *l, char **n, int *dgt, t_precs *s);
 void				ft_ldigit_nnnn(t_flags *list, int *size, int *i, char **s);
@@ -122,6 +121,7 @@ int					ft_argnull(t_flags *list);
 void				ft_decompose_digit(t_flags *list);
 void				ft_cut_lststr(t_flags *list, int start);
 int					ft_verif_noconv(t_flags *list, int idxtmp);
+void				ft_clear_precs(t_precs *lst);
 void				ft_clear_flags(t_flags *list);
 int					ft_isflag(char c);
 int					ft_noflags(char c);
@@ -136,6 +136,7 @@ void				ft_digitflag(t_flags *list);
 void				ft_lspaceflag(t_flags *list);
 void				ft_ldigitflag(t_flags *list);
 void				ft_wzeroflag(t_flags *list);
+void				ft_strzhash(t_flags *list, char **str);
 void				ft_zhashflag(t_flags *list);
 void				ft_zeroflag(t_flags *list);
 void				ft_hashflag(t_flags *list);

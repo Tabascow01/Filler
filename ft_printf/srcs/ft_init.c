@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 02:04:09 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/06 02:31:37 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/10 01:18:42 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_precs		*ft_init_precs(t_precs *lst)
 	if (lst == NULL)
 	{
 		lst = (t_precs *)ft_memalloc(sizeof(t_precs));
+		lst->zero = 0;
+		lst->spaces = 0;
 		lst->tmp = 0;
 		lst->tmpargs = 0;
 		lst->wtmp = 0;
@@ -25,7 +27,7 @@ t_precs		*ft_init_precs(t_precs *lst)
 		lst->j = 0;
 		lst->size = 0;
 		lst->neg = 0;
-		lst->null = 0;
+		lst->flags = 0;
 	}
 	return (lst);
 }

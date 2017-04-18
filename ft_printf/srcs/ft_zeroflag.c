@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 15:56:45 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/03/27 02:56:37 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:15:30 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,51 @@ void			ft_zhashflag(t_flags *list)
 	newarg = ft_strcat(newarg, tmp);
 	ft_strdel(&list->args);
 	list->args = ft_reallocf(newarg, 0);
+}
+
+void			ft_strzhash(t_flags *list, char **str)
+{
+	char	*newarg;
+	int		i;
+	int		j;
+	char	*tmp;
+	char	*tmparg;
+
+	i = 0;
+	j = 0;
+	if (ft_strchr((*str), '0') && (list->conv == 'o' || list->conv == 'O'))
+		return ;
+	if (list->dig1 > (int)ft_strlen(list->args) + list->dig2)
+		tmparg = ft_strnew(list->dig1);
+	else
+		tmparg = ft_strnew(list->dig2);
+	while ((*str)[i] && (*str)[i] == ' ')
+	{
+		if (i < 1 && list->dig1 > list->dig2
+				&& list->dig2 > (int)ft_strlen(list->args)
+				&& list->dig1 > list->dig2 && list->dig1 <= list->dig2 + 1)
+			i++;
+		else if (i < 2 && list->dig1 > list->dig2
+				&& list->dig2 > (int)ft_strlen(list->args)
+				&& list->dig1 > list->dig2 + 1)
+			i++;
+		else
+			tmparg[j++] = (*str)[i++];
+	}
+	tmp = &(*str)[i];
+	newarg = ft_strnew((int)ft_strlen(list->args) + 2);
+	if (list->conv == 'x')
+		newarg = ft_strcpy(newarg, "0x");
+	else if (list->conv == 'X')
+		newarg = ft_strcpy(newarg, "0X");
+	else if ((list->conv == 'o' || list->conv == 'O')
+			&& list->dig2 <= (int)ft_strlen(list->args)
+			&& list->dig1 > (int)ft_strlen(list->args))
+		newarg = ft_strcpy(newarg, "0");
+	newarg = ft_strjoin(newarg, tmp);
+	(*str) = ft_strjoin(tmparg, newarg);
+	ft_strdel(&tmparg);
+	ft_strdel(&newarg);
+	(*str) = ft_reallocf((*str), 0);
+	return ;
 }

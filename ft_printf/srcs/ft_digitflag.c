@@ -6,44 +6,44 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 16:38:38 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/06 00:51:18 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/18 14:08:32 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "stdio.h" //
 
-static void		ft_precs(t_flags *list, char *newarg, t_precs *lst, int digit)
+static void		ft_precs(t_flags *list, char *newarg, t_precs *lst)
 {
-	int		digittmp;
-
-	if (ft_dgt_1(list, &digittmp, lst, &digit) == 0)
+	if (!ft_dgt_1(list, lst))
 		return ;
 	if (list->conv != 's')
 	{
-		ft_dgt_2(list, &digittmp, lst, &digit);
-		if (digittmp > (int)ft_strlen(list->args) + digit - lst->size)
-			ft_dgt_3(&newarg, lst, &digittmp, &digit);
-		ft_dgt_4(list, &newarg, lst, &digit);
-		if (digit < lst->size && (list->args[0] == '-' || list->args[0] == '+')
-				&& digittmp > lst->size)
-			newarg[lst->i] = list->args[0];
-		ft_dgt_5(list, &newarg, lst, &digittmp);
-		ft_dgt_6(list, lst, &newarg);
+		if (list->args[0] == '-' || list->args[0] == '+')
+			lst->neg = 1;
+		if (list->dig1 > list->dig2 && list->dig1 > lst->size)
+			ft_dgt_3(list, lst);
+		if (list->dig2 >= lst->size)
+			ft_dgt_4(list, lst);
+		ft_dgt_5(&newarg, list, lst);
 	}
 	else
 	{
-		if (digit > 0)
-			ft_dgt_7(list, lst, &digit);
+		if (list->dig2 > 0)
+			ft_dgt_7(list, lst);
 		else
 			ft_bzero(list->args, lst->size);
-		if (digittmp > 0)
-			ft_dgt_8(list, lst, &digittmp, &digit);
+		if ((list->dig1 > list->dig2 && list->dig1 > 0)
+				|| (list->dig2 >= lst->size && list->dig1 > 0
+					&& list->dig1 < list->dig2))
+			ft_dgt_8(list, lst);
 	}
 }
 
-static void		ft_digit_n(t_flags *list, int *size, int *digit, char **newarg)
+static void		ft_digit_n(t_flags *list, int *size, char **newarg)
 {
+	int digit;
+
+	digit = list->dig2;
 	if ((int)ft_strlen(list->args) == 0 && (list->conv != 's'
 				|| list->noconv > 0))
 	{
@@ -51,24 +51,13 @@ static void		ft_digit_n(t_flags *list, int *size, int *digit, char **newarg)
 			list->size += 1;
 		(*size) += 1;
 	}
-	(*digit) = ft_atoi(list->digit);
-	(*newarg) = ft_strnew((*digit) - (*size));
+	if (digit > (*size))
+		(*newarg) = ft_strnew(digit - (*size));
+	else
+		(*newarg) = ft_strnew(1);
 }
 
-static void		ft_digit_nn(t_flags *list, int *i, char **tmp)
-{
-	while (list->digit[(*i)] && list->digit[(*i)] != '.')
-		(*i)++;
-	(*tmp) = ft_strnew((*i));
-	(*i) = 0;
-	while (list->digit[(*i)] && list->digit[(*i)] != '.')
-	{
-		(*tmp)[(*i)] = list->digit[(*i)];
-		(*i)++;
-	}
-}
-
-static void		ft_digit_nnn(t_flags *list, int *i, char **newarg, char **tmp)
+static void		ft_digit_nn(t_flags *list, int *i, char **newarg, char **tmp)
 {
 	if ((*i) >= 0 && list->conv != 'u')
 		(*newarg)[(*i)] = '\0';
@@ -84,7 +73,6 @@ void			ft_digitflag(t_flags *list)
 {
 	char	*newarg;
 	t_precs	*lst;
-	int		digit;
 
 	newarg = NULL;
 	lst = NULL;
@@ -92,18 +80,25 @@ void			ft_digitflag(t_flags *list)
 	lst->size = (int)ft_strlen(list->args);
 	if (list->precision == 0)
 	{
-		ft_digit_n(list, &lst->size, &digit, &newarg);
-		while (lst->i < (digit - lst->size))
+		ft_digit_n(list, &lst->size, &newarg);
+		while (lst->i < (list->dig1 - lst->size))
 			newarg[lst->i++] = ' ';
-		ft_digit_nnn(list, &lst->i, &newarg, &lst->tmp);
+		ft_digit_nn(list, &lst->i, &newarg, &lst->tmp);
 	}
 	else
 	{
-		ft_digit_nn(list, &lst->i, &lst->tmp);
-		digit = ft_atoi(&list->digit[lst->i + 1]);
-		newarg = ft_strnew(ft_atoi(lst->tmp) + digit -
-				((int)ft_strlen(list->args)));
-		ft_precs(list, newarg, lst, digit);
+		if (list->conv != 's')
+		{
+			if (list->dig1 > list->dig2 && list->dig1 > lst->size)
+				newarg = ft_strnew(list->dig1);
+			else if (list->dig2 > list->dig1 && list->dig2 > lst->size)
+				newarg = ft_strnew(list->dig2);
+			else
+				newarg = ft_strnew(list->dig1 + list->dig2);
+		}
+		ft_precs(list, newarg, lst);
 	}
+	if (list->conv != 's' && list->precision > 0)
+		ft_clear_precs(lst);
 	free(lst);
 }
