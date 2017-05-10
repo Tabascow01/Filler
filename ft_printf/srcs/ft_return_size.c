@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 15:16:52 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/18 14:13:59 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/04/29 15:37:39 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ static void		ft_size_conv(t_flags *list)
 
 static void		ft_size_percent(t_flags *list)
 {
-	if (list->digit > 0 && list->zero == 0)
+	if (((int)ft_strlen(list->digit) > 0 || list->nbleft > 0)
+			&& list->zero == 0)
 	{
 		list->size += (int)ft_strlen(list->args) -
-			(int)ft_strlen(list->digit) - 2;
-		if (list->left > 0)
-			list->size -= 1;
+			(int)ft_strlen(list->digit) - list->nbleft - 2;
 	}
 	else if (list->digit > 0 && list->zero == '0')
 		list->size += (int)ft_strlen(list->args)

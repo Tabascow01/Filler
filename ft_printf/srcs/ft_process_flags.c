@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 01:12:04 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/18 14:12:58 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/05/07 22:52:39 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void		ft_process_flags_nnn(t_flags *list)
 {
 	if ((list->dig1 > 0 || list->dig2 > 0
 			|| (list->dig1 > 0 && list->dig2 > 0))
-			&& list->left == 0 && list->conv != 'S')
+			&& list->left == 0 && list->conv != 'S'
+			&& list->conv != 'C' && list->noconv == 0)
 	{
 		ft_process_flags_nn(list);
 		if ((list->conv == 'C' || list->conv == 'c') && list->precision > 0)
@@ -97,7 +98,8 @@ void			ft_process_flags(t_flags *list)
 {
 	ft_decompose_digit(list);
 	ft_process_flags_n(list);
-	if (list->left > 0)
+	if (list->left > 0 && list->conv != 'S' && list->conv != 'C'
+		&& list->noconv == 0)
 	{
 		if (list->dig1 > 0 || list->dig2 > 0 || list->precision > 0 ||
 				(list->dig1 > 0 && list->dig2 > 0 && list->precision > 0))

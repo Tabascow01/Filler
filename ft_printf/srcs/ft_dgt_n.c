@@ -6,7 +6,7 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 05:02:59 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/18 14:07:38 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/05/07 22:16:20 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	ft_dgt_3(t_flags *list, t_precs *lst)
 	int		diff;
 
 	diff = 0;
-	if (lst->neg > 0)
-		diff = -1;
+	if (list->args[0] == '+' || (list->args[0] == '-'
+				&& (list->zero > 0 || list->dig2 > lst->size)))
+		diff -= 1;
 	if (list->dig1 > list->dig2 && list->dig2 > lst->size)
 		diff += list->dig1 - list->dig2;
 	else if (list->dig1 > list->dig2 && list->dig2 <= lst->size)
@@ -65,7 +66,7 @@ void	ft_dgt_4(t_flags *list, t_precs *lst)
 	}
 	while (lst->i < diff)
 		lst->zero[lst->i++] = '0';
-	if (lst->i > 0 && list->hash == 0)
+	if (lst->i > 0 && list->hash == 0 && list->space == 0)
 		lst->zero[lst->i] = '\0';
 	else if (list->hash > 0)
 		ft_strzhash(list, &lst->zero);
@@ -77,12 +78,7 @@ void	ft_dgt_5(char **newarg, t_flags *list, t_precs *lst)
 {
 	int a;
 
-	a = 0;
-	if ((list->args[0] == '-' || list->args[0] == '+') && lst->i > 0)
-	{
-		list->args++;
-		a++;
-	}
+	ft_dgt_5_n(list, lst, &a);
 	if (list->dig1 > list->dig2 && list->dig2 > lst->size)
 	{
 		lst->tmp = ft_strjoin(lst->spaces, lst->zero);
@@ -104,5 +100,5 @@ void	ft_dgt_5(char **newarg, t_flags *list, t_precs *lst)
 	if (a > 0)
 		list->args--;
 	ft_strdel(&list->args);
-	list->args = (*newarg);
+	list->args = ft_reallocf((*newarg), 0);
 }

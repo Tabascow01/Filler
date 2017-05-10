@@ -6,11 +6,18 @@
 /*   By: mchemakh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 16:38:38 by mchemakh          #+#    #+#             */
-/*   Updated: 2017/04/18 14:08:32 by mchemakh         ###   ########.fr       */
+/*   Updated: 2017/05/10 04:05:59 by mchemakh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static void		ft_precs_n(t_flags *list, t_precs *lst)
+{
+	if (list->space > 0 && list->hash == 0 && lst->neg == 0
+			&& list->dig1 < list->dig2)
+		ft_spaceflag(list);
+}
 
 static void		ft_precs(t_flags *list, char *newarg, t_precs *lst)
 {
@@ -25,6 +32,7 @@ static void		ft_precs(t_flags *list, char *newarg, t_precs *lst)
 		if (list->dig2 >= lst->size)
 			ft_dgt_4(list, lst);
 		ft_dgt_5(&newarg, list, lst);
+		ft_precs_n(list, lst);
 	}
 	else
 	{
@@ -51,8 +59,10 @@ static void		ft_digit_n(t_flags *list, int *size, char **newarg)
 			list->size += 1;
 		(*size) += 1;
 	}
-	if (digit > (*size))
+	if (digit > (*size) && list->noconv == 0)
 		(*newarg) = ft_strnew(digit - (*size));
+	else if (list->args[0] == '%')
+		(*newarg) = ft_strnew(list->dig1 + 1);
 	else
 		(*newarg) = ft_strnew(1);
 }
@@ -87,15 +97,7 @@ void			ft_digitflag(t_flags *list)
 	}
 	else
 	{
-		if (list->conv != 's')
-		{
-			if (list->dig1 > list->dig2 && list->dig1 > lst->size)
-				newarg = ft_strnew(list->dig1);
-			else if (list->dig2 > list->dig1 && list->dig2 > lst->size)
-				newarg = ft_strnew(list->dig2);
-			else
-				newarg = ft_strnew(list->dig1 + list->dig2);
-		}
+		ft_dgt_nnn(list, lst, &newarg);
 		ft_precs(list, newarg, lst);
 	}
 	if (list->conv != 's' && list->precision > 0)
